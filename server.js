@@ -2,7 +2,7 @@ const express= require('express')
 const connectDB = require('./config/connectBD')
 const routerr=require('./routes/Person')
 const app=express()
-const port=process.env.Port||5000
+const port=process.env.Port||4000
 
 //Middelware
 app.use(express.json())

@@ -54,11 +54,12 @@ var createAndSavePerson = function(done){
 
 
 //Use model.find() to Search Your Database
-Person.find({name:"Rihab"}, 
-(err,data)=>{
-  err? console.log(err):
-  console.log(data)
-})
+ Person.find({name:"Rihab"}, 
+ (err,data)=>{
+   err? console.log(err):
+   console.log(data)
+ })
+
 
 //Use model.findOne() to Return a Single Matching Document from Your Database
 const findOnePerson=function(food,done){
@@ -72,7 +73,7 @@ const findOnePerson=function(food,done){
 
 
 //Use model.findById() to Search Your Database By _id
-const findOnePersonById=function(ID,done){
+const FINDAPERSONBYID=function(ID,done){
   Person.findOnePersonById (ID,(error,data)=>{
     if (error){console.log(error)}
     else{
@@ -81,8 +82,56 @@ const findOnePersonById=function(ID,done){
   })
 }
 
+//Perform Classic Updates by Running Find, Edit, then Save
+//find
+Person.findOne({name:"Rihab"},(error,data)=>{
+
+  if (error){console.log(error)}
+  //update
+  else{
+data.favoriteFood.push("humberger")
+//save
+data.save()
+  }
+})
 
 
+
+//Delete One Document Using model.findByIdAndRemove
+
+let REOVEONEPERSON= function(personID,done){
+  
+Person.findByIdAndRemove(personID,(error,data)=>{
+ if (error) {console.log("ther is an error")}
+ else{
+   done(null,data)
+ }
+})}
+
+//MongoDB and Mongoose - Delete Many Documents with model.remove()
+let REMOVEMARY= function (done){
+  let toRemove="Mary"
+  Person.remove({name:toRemove},(error,json)=>{
+    if (error){console.log(error)}
+    else{
+      done(null,json)
+    }
+  })
+}
+
+
+//Chain Search Query Helpers to Narrow Search Results
+var queryChain = function(done) {
+  
+  Person.find({favoriteFoods: ["burrito"]})
+  .sort({name:'asc'})
+  .limit(2)
+  .select('-age')
+  .exec((err,data)=>{
+    if(err){return done(err)};
+    return done(null, data);
+  })
+};
 
 
 //test
